@@ -106,7 +106,7 @@ class PragActProbe:
             max_entropy = math.log(len(c))
             confidence = 1.0 - (entropy / (max_entropy + 1e-12))
            
-            if confidence < 0.20:
+            if confidence < 0.30:
                 h = self._tie_break(text)
                 if h is not None:
                     idx = h

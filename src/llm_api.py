@@ -73,7 +73,7 @@ class OpenRouterLLM(LLMClient):
 
     def mcq_label(self, prompt: str, labels: List[str]) -> str:
         allowed = ", ".join(labels)
-        sysmsg = f"Return EXACTLY one label from this set, no extra text: {allowed}"
+        sysmsg = f"Return EXACTLY ONE LABEL WORD from this set and nothing else (no letters, no punctuation, no explanations): {allowed}"
         data = self._chat(prompt + "\nReturn exactly ONE label word from the list.", logprobs=False, max_tokens=8, system=sysmsg)
         out = (data["choices"][0]["message"]["content"] or "").strip()
        
