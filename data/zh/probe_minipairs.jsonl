@@ -1,0 +1,8 @@
+{"text":"请把这段文字用要点总结一下。","gold":"request"}
+{"text":"你能把窗户打开吗？","gold":"question"}
+{"text":"窗户是打开的。","gold":"statement"}
+{"text":"我保证明天把报告发给你。","gold":"promise"}
+{"text":"谢谢你的帮助！","gold":"expressive"}
+{"text":"兹宣布比赛结束。","gold":"declaration"}
+{"text":"这是做什么用的？","gold":"question"}
+{"text":"请按照以下步骤操作。","gold":"request"}

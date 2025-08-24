@@ -1,0 +1,8 @@
+{"text":"Could you please open the window?","gold":"question"}
+{"text":"Open the window, please.","gold":"request"}
+{"text":"Please summarize the following article.","gold":"request"}
+{"text":"What is the capital of France?","gold":"question"}
+{"text":"The window is open.","gold":"statement"}
+{"text":"I promise to send the report tomorrow.","gold":"promise"}
+{"text":"Thanks for your help!","gold":"expressive"}
+{"text":"We hereby declare the contest closed.","gold":"declaration"}
