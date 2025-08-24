@@ -1,0 +1,12 @@
+{
+  "mcq_templates": [
+    "Utterance: {text}\nWhich speech act best describes it?\n(A) Statement (B) Question (C) Request (D) Promise (E) Expressive (F) Declaration\nAnswer:",
+    "{text}\nChoose the communicative function:\n(A) Statement (B) Question (C) Request (D) Promise (E) Expressive (F) Declaration\nAnswer:",
+    "Consider the utterance:\n\"{text}\"\nSelect one label:\n(A) Statement (B) Question (C) Request (D) Promise (E) Expressive (F) Declaration\nYour choice:",
+    "Given the text: {text}\nWhat is its illocutionary force?\n(A) Statement (B) Question (C) Request (D) Promise (E) Expressive (F) Declaration\nAnswer:",
+    "Text: {text}\nPick one category:\n(A) Statement (B) Question (C) Request (D) Promise (E) Expressive (F) Declaration\nA/B/C/D/E/F:"
+  ],
+  "calibration_template": "—",
+  "options_en": ["Statement","Question","Request","Promise","Expressive","Declaration"],
+  "options_key_order": ["statement","question","request","promise","expressive","declaration"]
+}

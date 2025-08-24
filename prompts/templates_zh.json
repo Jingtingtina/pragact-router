@@ -1,0 +1,12 @@
+{
+  "mcq_templates": [
+    "句子：{text}\n它最符合下列哪一种言语行为？\n(A) 陈述 (B) 疑问 (C) 请求 (D) 承诺 (E) 表达 (F) 宣告\n答案：",
+    "{text}\n请选择其语用功能：\n(A) 陈述 (B) 疑问 (C) 请求 (D) 承诺 (E) 表达 (F) 宣告\n答案：",
+    "给定文本：\n「{text}」\n请选择一个标签：\n(A) 陈述 (B) 疑问 (C) 请求 (D) 承诺 (E) 表达 (F) 宣告\n你的选择：",
+    "文本：{text}\n它的言语行为是？\n(A) 陈述 (B) 疑问 (C) 请求 (D) 承诺 (E) 表达 (F) 宣告\n答案：",
+    "内容：{text}\n请选择类别：\n(A) 陈述 (B) 疑问 (C) 请求 (D) 承诺 (E) 表达 (F) 宣告\nA/B/C/D/E/F："
+  ],
+  "calibration_template": "—",
+  "options_zh": ["陈述","疑问","请求","承诺","表达","宣告"],
+  "options_key_order": ["statement","question","request","promise","expressive","declaration"]
+}

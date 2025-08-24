@@ -1,0 +1,18 @@
+{
+  "labels": [
+    {"key": "statement",  "zh": "陈述"},
+    {"key": "question",   "zh": "疑问"},
+    {"key": "request",    "zh": "请求"},
+    {"key": "promise",    "zh": "承诺"},
+    {"key": "expressive", "zh": "表达"},
+    {"key": "declaration","zh": "宣告"}
+  ],
+  "aliases": {
+    "statement":  ["陈述句","说明","论断"],
+    "question":   ["疑问句","问题","吗？"],
+    "request":    ["指令","祈使","请…","请你","请您"],
+    "promise":    ["许诺","保证","承诺"],
+    "expressive": ["情感表达","道歉","致谢","赞美"],
+    "declaration":["声明","公告","通知"]
+  }
+}

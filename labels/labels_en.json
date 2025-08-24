@@ -1,0 +1,18 @@
+{
+  "labels": [
+    {"key": "statement",  "en": "Statement"},
+    {"key": "question",   "en": "Question"},
+    {"key": "request",    "en": "Request"},
+    {"key": "promise",    "en": "Promise"},
+    {"key": "expressive", "en": "Expressive"},
+    {"key": "declaration","en": "Declaration"}
+  ],
+  "aliases": {
+    "statement":  ["Assertion","Claim","Proposition"],
+    "question":   ["Inquiry","Interrogative"],
+    "request":    ["Directive","Command","Ask"],
+    "promise":    ["Commitment","Offer","Assurance"],
+    "expressive": ["Emotion","Apology","Thanks"],
+    "declaration":["Announcement","Proclamation","Verdictive"]
+  }
+}

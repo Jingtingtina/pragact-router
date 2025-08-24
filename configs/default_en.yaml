@@ -1,0 +1,15 @@
+language: "en"
+model: "DUMMY"
+use_logprobs: true
+templates_file: "prompts/templates_en.json"
+labels_file: "labels/labels_en.json"
+
+probe:
+  num_templates: 5
+  threshold: 0.5
+
+router:
+  enable_rag: true
+  enable_style_switch: true
+  budget_tokens: 120
+  rag_weights: {bm25: 0.6, embed: 0.3, actmatch: 0.1}
