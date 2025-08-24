@@ -6,6 +6,13 @@
     "Given the text: {text}\nWhat is its illocutionary force?\n(A) Statement (B) Question (C) Request (D) Promise (E) Expressive (F) Declaration\nA/B/C/D/E/F:",
     "Text: {text}\nPick one category:\n(A) Statement (B) Question (C) Request (D) Promise (E) Expressive (F) Declaration\nA/B/C/D/E/F:"
   ],
+  "word_templates": [
+    "Utterance: {text}\nChoose EXACTLY ONE label (return the label word only):\nStatement | Question | Request | Promise | Expressive | Declaration\nAnswer:",
+    "{text}\nPick EXACTLY ONE label word (no letters, no punctuation):\nStatement | Question | Request | Promise | Expressive | Declaration\nAnswer:",
+    "Text: {text}\nSelect ONE label (respond with the label word exactly):\nStatement | Question | Request | Promise | Expressive | Declaration\nAnswer:",
+    "Given the utterance: {text}\nReturn exactly one label from this list (word only):\nStatement | Question | Request | Promise | Expressive | Declaration\nAnswer:",
+    "Input: {text}\nValid labels:\nStatement | Question | Request | Promise | Expressive | Declaration\nOutput exactly one label word:"
+  ],
   "calibration_template": "N/A",
   "options_en": ["Statement","Question","Request","Promise","Expressive","Declaration"],
   "options_key_order": ["statement","question","request","promise","expressive","declaration"]
