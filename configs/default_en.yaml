@@ -1,6 +1,6 @@
 language: "en"
 model: "DUMMY"
-use_logprobs: true
+use_logprobs: false
 templates_file: "prompts/templates_en.json"
 labels_file: "labels/labels_en.json"
 
