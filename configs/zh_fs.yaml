@@ -1,0 +1,16 @@
+language: zh
+model: DUMMY
+use_logprobs: false
+templates_file: prompts/templates_zh_fs.json
+labels_file: labels/labels_zh.json
+probe:
+  num_templates: 5
+  threshold: 0.25
+router:
+  enable_rag: true
+  enable_style_switch: true
+  budget_tokens: 120
+  rag_weights:
+    bm25: 0.6
+    embed: 0.3
+    actmatch: 0.1
