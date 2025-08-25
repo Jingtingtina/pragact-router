@@ -1,7 +1,27 @@
+import re
+import os
 
 import json, re
 from typing import List, Tuple
 from src.llm_api import LLMClient
+
+
+_Q_EN  = re.compile(r'\?\s*$')
+_Q_ZH  = re.compile(r'[？吗呢]\s*$')
+_REQ_EN = re.compile(r'^(please|kindly|could you|can you|would you|pls)\b', re.I)
+_REQ_ZH = re.compile(r'^(请|麻烦|能否|可以|烦请)')
+
+def fast_cue(text: str):
+    t = (text or "").strip()
+    is_zh = any('\u4e00' <= ch <= '\u9fff' for ch in t)
+    if is_zh:
+        if _Q_ZH.search(t):   return "question"
+        if _REQ_ZH.search(t): return "request"
+    else:
+        if _Q_EN.search(t):   return "question"
+        if _REQ_EN.search(t): return "request"
+    return None
+
 
 class PragActProbe:
     def __init__(self, templates_path: str, labels_path: str, use_logprobs: bool = True):
@@ -73,6 +93,14 @@ class PragActProbe:
         return None
 
     def score(self, text: str, llm: LLMClient) -> Tuple[int, float, List[float]]:
+
+        # Optional fast-cue short-circuit (enable via env PRAGACT_FAST_CUES=1)
+        use_fast = os.getenv('PRAGACT_FAST_CUES','0').lower() in ('1','true','yes','y','on')
+        if use_fast:
+            g = fast_cue(text)
+            if g in self.keys:
+                idx = self.keys.index(g)
+                return idx, 1.0, [0.0]*len(self.keys)
         import numpy as np, math
         if self.use_logprobs and self.mcq_templates:
             all_scores = []
