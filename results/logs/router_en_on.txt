@@ -1,0 +1,33 @@
+
+=== Router effect report ===
+FAST_CUES=OFF | data=data/en/probe_150.jsonl
+
+-- Classification --
+              precision    recall  f1-score   support
+
+   statement      0.800     0.103     0.182        39
+    question      0.857     1.000     0.923        48
+     request      0.840     0.875     0.857        48
+     promise      0.385     1.000     0.556         5
+  expressive      0.286     0.800     0.421         5
+ declaration      0.250     0.600     0.353         5
+
+    accuracy                          0.707       150
+   macro avg      0.570     0.730     0.549       150
+weighted avg      0.782     0.707     0.661       150
+
+[[ 4  7  7  7  8  6]
+ [ 0 48  0  0  0  0]
+ [ 1  0 42  1  1  3]
+ [ 0  0  0  5  0  0]
+ [ 0  1  0  0  4  0]
+ [ 0  0  1  0  1  3]]
+
+-- Router actions (counts) --
+Prompt_StepByStep          106
+Prompt_Concise             44
+RAG_definitional_boost     44
+RAG_rerank                 1
+
+-- Gating on Q/Request --
+high >= τ: 1  | low < τ: 105  | total Q/Req: 106  | high rate: 0.009

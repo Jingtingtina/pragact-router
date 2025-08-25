@@ -1,0 +1,150 @@
+{"text": "Could you explain the experiment?", "gold": "question"}
+{"text": "This article is important for the project.", "gold": "statement"}
+{"text": "Translate the paper.", "gold": "request"}
+{"text": "We hereby announce the completion of the experiment.", "gold": "declaration"}
+{"text": "This dataset is important for the project.", "gold": "statement"}
+{"text": "The document includes a section on evaluation.", "gold": "statement"}
+{"text": "How does the system work?", "gold": "question"}
+{"text": "What is the current status of the dataset?", "gold": "question"}
+{"text": "Why is the system important?", "gold": "question"}
+{"text": "We hereby announce the completion of the schedule.", "gold": "declaration"}
+{"text": "When does the experiment start?", "gold": "question"}
+{"text": "Why is the document important?", "gold": "question"}
+{"text": "What is the current status of the schedule?", "gold": "question"}
+{"text": "We hereby declare the schedule closed.", "gold": "declaration"}
+{"text": "List the key points of the document.", "gold": "request"}
+{"text": "The report includes a section on evaluation.", "gold": "statement"}
+{"text": "Explain the page.", "gold": "request"}
+{"text": "Why is the report important?", "gold": "question"}
+{"text": "Could you explain the section?", "gold": "question"}
+{"text": "This section is important for the project.", "gold": "statement"}
+{"text": "Translate the article.", "gold": "request"}
+{"text": "Could you explain the dataset?", "gold": "question"}
+{"text": "Translate the report.", "gold": "request"}
+{"text": "Translate the file.", "gold": "request"}
+{"text": "This model is important for the project.", "gold": "statement"}
+{"text": "Summarize the file in bullet points.", "gold": "request"}
+{"text": "Summarize the document in bullet points.", "gold": "request"}
+{"text": "The model was updated yesterday.", "gold": "statement"}
+{"text": "Is the model available now?", "gold": "question"}
+{"text": "How does the experiment work?", "gold": "question"}
+{"text": "The document includes a section on methods.", "gold": "statement"}
+{"text": "Sorry for the inconvenience.", "gold": "expressive"}
+{"text": "What is the current status of the system?", "gold": "question"}
+{"text": "Explain the file.", "gold": "request"}
+{"text": "Why is the paragraph important?", "gold": "question"}
+{"text": "This experiment is important for the project.", "gold": "statement"}
+{"text": "The document includes a section on discussion.", "gold": "statement"}
+{"text": "The report includes a section on methods.", "gold": "statement"}
+{"text": "The paper includes a section on evaluation.", "gold": "statement"}
+{"text": "The paper includes a section on discussion.", "gold": "statement"}
+{"text": "Could you explain the file?", "gold": "question"}
+{"text": "The paper includes a section on results.", "gold": "statement"}
+{"text": "The paper includes a section on introduction.", "gold": "statement"}
+{"text": "Please update the dataset.", "gold": "request"}
+{"text": "Summarize the article in bullet points.", "gold": "request"}
+{"text": "Explain the paragraph.", "gold": "request"}
+{"text": "I promise to deliver the report tomorrow.", "gold": "promise"}
+{"text": "This paper is important for the project.", "gold": "statement"}
+{"text": "Could you explain the paper?", "gold": "question"}
+{"text": "Please open the file.", "gold": "request"}
+{"text": "The article includes a section on discussion.", "gold": "statement"}
+{"text": "Explain the dataset.", "gold": "request"}
+{"text": "When does the pipeline start?", "gold": "question"}
+{"text": "Could you explain the document?", "gold": "question"}
+{"text": "Could you explain the model?", "gold": "question"}
+{"text": "Apologies for the delay.", "gold": "expressive"}
+{"text": "List the key points of the page.", "gold": "request"}
+{"text": "What is the current status of the model?", "gold": "question"}
+{"text": "The article includes a section on evaluation.", "gold": "statement"}
+{"text": "List the key points of the paper.", "gold": "request"}
+{"text": "Why is the pipeline important?", "gold": "question"}
+{"text": "Could you explain the paragraph?", "gold": "question"}
+{"text": "Why is the project important?", "gold": "question"}
+{"text": "Review the file.", "gold": "request"}
+{"text": "Explain the project.", "gold": "request"}
+{"text": "Thank you so much.", "gold": "expressive"}
+{"text": "Review the paragraph.", "gold": "request"}
+{"text": "Explain the article.", "gold": "request"}
+{"text": "The report was updated yesterday.", "gold": "statement"}
+{"text": "What is the current status of the experiment?", "gold": "question"}
+{"text": "Review the paper.", "gold": "request"}
+{"text": "I really appreciate your help.", "gold": "expressive"}
+{"text": "List the key points of the article.", "gold": "request"}
+{"text": "Please update the project.", "gold": "request"}
+{"text": "The document was updated yesterday.", "gold": "statement"}
+{"text": "The paper includes a section on methods.", "gold": "statement"}
+{"text": "The system is available.", "gold": "statement"}
+{"text": "Why is the article important?", "gold": "question"}
+{"text": "We hereby declare the pipeline closed.", "gold": "declaration"}
+{"text": "This report is important for the project.", "gold": "statement"}
+{"text": "This document is important for the project.", "gold": "statement"}
+{"text": "This page is important for the project.", "gold": "statement"}
+{"text": "Explain the model.", "gold": "request"}
+{"text": "When does the schedule start?", "gold": "question"}
+{"text": "Summarize the report in bullet points.", "gold": "request"}
+{"text": "Explain the paper.", "gold": "request"}
+{"text": "I promise to submit the document tomorrow.", "gold": "promise"}
+{"text": "How does the dataset work?", "gold": "question"}
+{"text": "Explain the pipeline.", "gold": "request"}
+{"text": "Explain the experiment.", "gold": "request"}
+{"text": "Explain the system.", "gold": "request"}
+{"text": "Why is the schedule important?", "gold": "question"}
+{"text": "Could you explain the schedule?", "gold": "question"}
+{"text": "Summarize the paper in bullet points.", "gold": "request"}
+{"text": "The document includes a section on introduction.", "gold": "statement"}
+{"text": "Could you explain the page?", "gold": "question"}
+{"text": "Review the model.", "gold": "request"}
+{"text": "The report includes a section on results.", "gold": "statement"}
+{"text": "Review the article.", "gold": "request"}
+{"text": "List the key points of the file.", "gold": "request"}
+{"text": "Why is the experiment important?", "gold": "question"}
+{"text": "Please update the system.", "gold": "request"}
+{"text": "How does the pipeline work?", "gold": "question"}
+{"text": "Translate the paragraph.", "gold": "request"}
+{"text": "Translate the document.", "gold": "request"}
+{"text": "What is the current status of the pipeline?", "gold": "question"}
+{"text": "The article includes a section on introduction.", "gold": "statement"}
+{"text": "List the key points of the report.", "gold": "request"}
+{"text": "The document includes a section on results.", "gold": "statement"}
+{"text": "I promise to deliver the dataset tomorrow.", "gold": "promise"}
+{"text": "Why is the section important?", "gold": "question"}
+{"text": "The model is available.", "gold": "statement"}
+{"text": "The article includes a section on methods.", "gold": "statement"}
+{"text": "Why is the model important?", "gold": "question"}
+{"text": "List the key points of the paragraph.", "gold": "request"}
+{"text": "Please update the document.", "gold": "request"}
+{"text": "How does the model work?", "gold": "question"}
+{"text": "When does the project start?", "gold": "question"}
+{"text": "The report includes a section on discussion.", "gold": "statement"}
+{"text": "This paragraph is important for the project.", "gold": "statement"}
+{"text": "Could you explain the pipeline?", "gold": "question"}
+{"text": "Translate the section.", "gold": "request"}
+{"text": "Review the section.", "gold": "request"}
+{"text": "How does the schedule work?", "gold": "question"}
+{"text": "Why is the dataset important?", "gold": "question"}
+{"text": "Could you explain the report?", "gold": "question"}
+{"text": "Is the dataset available now?", "gold": "question"}
+{"text": "Please update the report.", "gold": "request"}
+{"text": "What is the current status of the project?", "gold": "question"}
+{"text": "The project was updated yesterday.", "gold": "statement"}
+{"text": "The report includes a section on introduction.", "gold": "statement"}
+{"text": "Summarize the section in bullet points.", "gold": "request"}
+{"text": "The dataset is available.", "gold": "statement"}
+{"text": "Please open the page.", "gold": "request"}
+{"text": "Review the report.", "gold": "request"}
+{"text": "Review the experiment.", "gold": "request"}
+{"text": "This file is important for the project.", "gold": "statement"}
+{"text": "I promise to submit the dataset tomorrow.", "gold": "promise"}
+{"text": "Explain the report.", "gold": "request"}
+{"text": "Why is the file important?", "gold": "question"}
+{"text": "The dataset was updated yesterday.", "gold": "statement"}
+{"text": "Thanks for your help!", "gold": "expressive"}
+{"text": "Could you explain the article?", "gold": "question"}
+{"text": "I promise to deliver the document tomorrow.", "gold": "promise"}
+{"text": "Is the system available now?", "gold": "question"}
+{"text": "The system was updated yesterday.", "gold": "statement"}
+{"text": "How does the project work?", "gold": "question"}
+{"text": "Could you explain the system?", "gold": "question"}
+{"text": "We hereby declare the experiment closed.", "gold": "declaration"}
+{"text": "Explain the document.", "gold": "request"}
