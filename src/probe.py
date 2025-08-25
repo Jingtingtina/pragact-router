@@ -58,7 +58,21 @@ def fast_cue(text: str):
     if re.search(r'(能否|能不能|是否可以)', t):
         return hit("request","ZH 能否/能不能/是否可以")
 
-    # --- Plain questions ---
+    
+    # --- High-confidence EN requests phrased as questions (handle before plain-question fallback) ---
+    # e.g., "Could/Would you (please) ... ?", "Would you mind ... ?"
+    rq_prefixes = (
+        "would you mind", "could you please", "could you ",
+        "would you please", "can you please", "can you "
+    )
+    if low.startswith(("please note",)):      # e.g., "Please note that the meeting is at 3pm."
+        return "statement", 1.0
+    if any(low.startswith(p) for p in rq_prefixes):
+        return "request", 1.0
+    # ZH: treat announcement/advice markers as statements
+    if any(x in t for x in ["请知悉", "特此", "兹宣布"]):
+        return "statement", 1.0
+# --- Plain questions ---
     if t.startswith("请问"):
         return hit("question","ZH 请问")
     if t.endswith("?") or t.endswith("？") or ("吗？" in t) or ("吗?" in t):
@@ -144,6 +158,15 @@ class PragActProbe:
         return None
 
     def score(self, text: str, llm: LLMClient) -> Tuple[int, float, List[float]]:
+        # --- Fast-cue short-circuit (enable via env PRAGACT_FAST_CUES=1) ---
+        use_fast = os.getenv("PRAGACT_FAST_CUES","0").lower() in ("1","true","yes","y","on")
+        if use_fast:
+            fc = fast_cue(text)
+            if fc:
+                key, conf = fc
+                if conf >= 0.95:
+                    idx = self.keys.index(key)
+                    return idx, conf, {"source":"fast_cue"}
 
         # Optional fast-cue short-circuit (enable via env PRAGACT_FAST_CUES=1)
         use_fast = os.getenv('PRAGACT_FAST_CUES','0').lower() in ('1','true','yes','y','on')
