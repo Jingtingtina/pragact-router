@@ -1,0 +1,14 @@
+[True] 你今天能发一下文件吗？ -> question (m=0.135) | gold=question
+[True] 麻烦你尽快回复一下。 -> request (m=0.029) | gold=request
+[False] 请知悉：下午3点开会。 -> request (m=0.135) | gold=statement
+[True] 我保证今晚把初稿发给你。 -> promise (m=0.039) | gold=promise
+[True] 十分抱歉造成不便。 -> expressive (m=0.000) | gold=expressive
+[True] 兹宣布比赛结束。 -> declaration (m=0.135) | gold=declaration
+[True] 这个结果看起来很重要。 -> statement (m=0.135) | gold=statement
+[True] 请把这段话用要点总结一下。 -> request (m=0.039) | gold=request
+[True] 请问现在系统可用吗？ -> question (m=0.135) | gold=question
+[False] 我会尽快给你反馈。 -> expressive (m=0.039) | gold=promise
+[True] 谢谢你的帮助！ -> expressive (m=0.029) | gold=expressive
+[True] 特此公告：本周暂停服务。 -> declaration (m=0.040) | gold=declaration
+
+Accuracy: 10/12 = 0.833

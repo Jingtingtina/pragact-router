@@ -1,0 +1,14 @@
+[True] You can send the file today? -> question (m=0.040) | gold=question
+[False] Could you send the file today? -> question (m=0.039) | gold=request
+[False] Please note that the meeting is at 3pm. -> request (m=0.039) | gold=statement
+[True] I promise I'll send the draft tonight. -> promise (m=0.040) | gold=promise
+[True] Thanks for the quick fix! -> expressive (m=0.040) | gold=expressive
+[True] It is hereby declared that the submission is closed. -> declaration (m=0.135) | gold=declaration
+[False] It would be great to have the file. -> declaration (m=0.135) | gold=statement
+[False] Would you mind summarizing the document? -> question (m=0.135) | gold=request
+[True] Apologies for the delay. -> expressive (m=0.039) | gold=expressive
+[False] I'll send the report after lunch. -> request (m=0.029) | gold=promise
+[True] There is an error in Section 3. -> statement (m=0.039) | gold=statement
+[True] What is the current status? -> question (m=0.135) | gold=question
+
+Accuracy: 7/12 = 0.583
