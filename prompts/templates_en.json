@@ -4,7 +4,9 @@
     "{text}\nChoose the communicative function:\n(A) Statement (B) Question (C) Request (D) Promise (E) Expressive (F) Declaration\nA/B/C/D/E/F:",
     "Consider the utterance:\n\"{text}\"\nSelect one label:\n(A) Statement (B) Question (C) Request (D) Promise (E) Expressive (F) Declaration\nA/B/C/D/E/F:",
     "Given the text: {text}\nWhat is its illocutionary force?\n(A) Statement (B) Question (C) Request (D) Promise (E) Expressive (F) Declaration\nA/B/C/D/E/F:",
-    "Text: {text}\nPick one category:\n(A) Statement (B) Question (C) Request (D) Promise (E) Expressive (F) Declaration\nA/B/C/D/E/F:"
+    "Text: {text}\nPick one category:\n(A) Statement (B) Question (C) Request (D) Promise (E) Expressive (F) Declaration\nA/B/C/D/E/F:",
+    "Utterance: {text}\nChoose ONE label. If it is a plain declarative sentence (not asking and not requesting), pick (A) Statement.\n(A) Statement (B) Question (C) Request (D) Promise (E) Expressive (F) Declaration\nA/B/C/D/E/F:",
+    "{text}\nSelect the communicative function. If it merely provides information with no question/request intent, answer (A) Statement.\n(A) Statement (B) Question (C) Request (D) Promise (E) Expressive (F) Declaration\nA/B/C/D/E/F:"
   ],
   "word_templates": [
     "Utterance: {text}\nChoose EXACTLY ONE label (return the label word only):\nStatement | Question | Request | Promise | Expressive | Declaration\nAnswer:",
