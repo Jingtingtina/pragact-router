@@ -13,7 +13,21 @@
     "Given the utterance: {text}\nReturn exactly one label from this list (word only):\nStatement | Question | Request | Promise | Expressive | Declaration\nAnswer:",
     "Input: {text}\nValid labels:\nStatement | Question | Request | Promise | Expressive | Declaration\nOutput exactly one label word:"
   ],
-  "calibration_template": "N/A",
-  "options_en": ["Statement","Question","Request","Promise","Expressive","Declaration"],
-  "options_key_order": ["statement","question","request","promise","expressive","declaration"]
+  "calibration_template": "—",
+  "options_en": [
+    "Statement",
+    "Question",
+    "Request",
+    "Promise",
+    "Expressive",
+    "Declaration"
+  ],
+  "options_key_order": [
+    "statement",
+    "question",
+    "request",
+    "promise",
+    "expressive",
+    "declaration"
+  ]
 }

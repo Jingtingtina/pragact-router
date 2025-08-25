@@ -13,7 +13,21 @@
     "给定：{text}\n有效标签如下，请只返回其中一个标签词：\n陈述 | 疑问 | 请求 | 承诺 | 表达 | 宣告\n答案：",
     "输入：{text}\n可选标签：\n陈述 | 疑问 | 请求 | 承诺 | 表达 | 宣告\n只返回一个标签词："
   ],
-  "calibration_template": "N/A",
-  "options_zh": ["陈述","疑问","请求","承诺","表达","宣告"],
-  "options_key_order": ["statement","question","request","promise","expressive","declaration"]
+  "calibration_template": "—",
+  "options_zh": [
+    "陈述",
+    "疑问",
+    "请求",
+    "承诺",
+    "表达",
+    "宣告"
+  ],
+  "options_key_order": [
+    "statement",
+    "question",
+    "request",
+    "promise",
+    "expressive",
+    "declaration"
+  ]
 }
