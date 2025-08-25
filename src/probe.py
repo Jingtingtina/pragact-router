@@ -13,45 +13,64 @@ _REQ_ZH = re.compile(r'^(请|麻烦|能否|可以|烦请)')
 
 def fast_cue(text: str):
     """
-    High-precision cues only. Return one of:
-      "declaration" | "promise" | "expressive" | "question" | "request" | "statement"
-    or None if no strong cue. English is checked in lowercase; Chinese left as-is.
+    Return (label, margin) if a clear surface-form cue exists, else None.
+    Deterministic EN + ZH patterns, anchored and case-insensitive.
+    Set PRAGACT_DEBUG_CUES=1 to print which rule fired.
     """
-    t = text.strip()
-    t_en = t.lower()
+    import os, re
+    t = (text or "").strip()
+    low = t.lower()
 
-    # --- hard cues (very high precision) ---
-    # Declaration
-    if any(kw in t_en for kw in ["we hereby declare", "we hereby announce", "i hereby declare", "hereby declare", "hereby announce"])        or any(kw in t for kw in ["特此宣布","兹宣布","公告如下","特此声明","兹通知","特此公告","兹公告"]):
-        return "declaration"
+    def hit(label, why):
+        if os.getenv('PRAGACT_DEBUG_CUES','0').lower() in ('1','true','yes','y','on'):
+            print(f"[fast_cue] {label}: {why} :: {t}")
+        return label, 1.0
 
-    # Promise
-    if "i promise" in t_en or any(kw in t for kw in ["我保证","我承诺","一定会","必将"]):
-        return "promise"
+    # --- Declarations ---
+    if t.startswith(("兹宣布","特此公告","特此声明","特此通知")):
+        return hit("declaration","ZH hereby")
+    if re.match(r'^(it is hereby|we hereby|hereby|we declare|notice:|announcement:)\b', low):
+        return hit("declaration","EN hereby/notice")
 
-    # Expressive
-    if any(kw in t_en for kw in ["thanks", "thank you", "sorry", "apologies", "apologise", "apologize"])        or any(kw in t for kw in ["谢谢","多谢","十分感谢","抱歉","很抱歉","对不起"]):
-        return "expressive"
+    # --- Expressives ---
+    if re.search(r'\b(sorry|apolog(?:ise|ize|y)|thank you|thanks)\b', low):
+        return hit("expressive","EN thanks/apology")
+    if any(p in t for p in ("抱歉","对不起","不好意思","谢谢","感谢")):
+        return hit("expressive","ZH thanks/apology")
 
-    # Question
-    if "?" in t        or any(t_en.startswith(w) for w in ["who","what","why","how","when","where","do ","does ","did ","can ","could ","will ","would ","should ","is ","are ","was ","were "])        or any(kw in t for kw in ["吗","呢","是否","能否","请问"]):
-        return "question"
+        # --- Promises / commitments ---
+    # EN: "I/We promise …", "I/We will …", "I'll/We'll …"  (cover straight/curly apostrophes)
+    import re as _re  # local alias to avoid shadowing above imports
+    if _re.match(r"^(?:i|we)(?:\s+promise|\s+will|['’]ll)\b", low):
+        return hit("promise","EN promise/will/'ll")
+    # ZH: 我会/我将/我们会/我们将/我承诺/我保证/我们承诺/我们保证 …
+    if t.startswith(("我会","我将","我们会","我们将","我承诺","我保证","我们承诺","我们保证")):
+        return hit("promise","ZH 会/将/承诺/保证")
+# --- Non-requests with 'please' (informative announcements) -> STATEMENT ---
+    if re.match(r'^please (note|be (advised|aware))\b', low):
+        return hit("statement","EN please note")
+    if t.startswith(("请知悉","请注意")) or ("敬请知悉" in t):
+        return hit("statement","ZH 请知悉/注意")
 
-    # Request
-    if any(kw in t_en for kw in ["please ", "please,", "kindly ", "could you", "would you", "can you", "please help", "please update", "please summarize", "please summarise"])        or any(t.startswith(prefix) for prefix in ["请","麻烦","烦请","请你","请您","劳驾"]):
-        return "request"
+    # --- Indirect requests framed as questions -> REQUEST ---
+    if re.match(r'^(would you mind|could you(?: please)?|can you(?: please)?|would it be possible to)\b', low):
+        return hit("request","EN indirect-request Q")
+    if re.search(r'(能否|能不能|是否可以)', t):
+        return hit("request","ZH 能否/能不能/是否可以")
 
-    # Statement (narrow patterns to avoid stealing Decl/Prom/Expr)
-    import re as _re
-    if any(_re.search(pat, t_en) for pat in [
-        r"\bthere (is|are)\b",
-        r"\b(includes|contains)\b",
-        r"\bwas updated yesterday\b",
-        r"\bis available\b",
-    ]) or any(_re.search(pat, t) for pat in [
-        r"(是|为).+重要", r"(包含|包括|含有)", r"(已经|已)更新", r"可用", r"中有"
-    ]):
-        return "statement"
+    # --- Plain questions ---
+    if t.startswith("请问"):
+        return hit("question","ZH 请问")
+    if t.endswith("?") or t.endswith("？") or ("吗？" in t) or ("吗?" in t):
+        return hit("question","punctuation ?/？")
+
+    # --- Strong statement shapes ---
+    if low.startswith("there is ") or low.startswith("there are ") \
+       or " looks " in low or " seems " in low \
+       or "it would be great" in low or "it would be helpful" in low:
+        return hit("statement","EN existential/hedge")
+    if any(p in t for p in ("看起来","似乎","包含","是")):
+        return hit("statement","ZH hedge/包含/是")
 
     return None
 
