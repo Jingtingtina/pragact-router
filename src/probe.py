@@ -12,16 +12,48 @@ _REQ_EN = re.compile(r'^(please|kindly|could you|can you|would you|pls)\b', re.I
 _REQ_ZH = re.compile(r'^(请|麻烦|能否|可以|烦请)')
 
 def fast_cue(text: str):
-    t = (text or "").strip()
-    is_zh = any('\u4e00' <= ch <= '\u9fff' for ch in t)
-    if is_zh:
-        if _Q_ZH.search(t):   return "question"
-        if _REQ_ZH.search(t): return "request"
-    else:
-        if _Q_EN.search(t):   return "question"
-        if _REQ_EN.search(t): return "request"
-    return None
+    """
+    High-precision cues only. Return one of:
+      "declaration" | "promise" | "expressive" | "question" | "request" | "statement"
+    or None if no strong cue. English is checked in lowercase; Chinese left as-is.
+    """
+    t = text.strip()
+    t_en = t.lower()
 
+    # --- hard cues (very high precision) ---
+    # Declaration
+    if any(kw in t_en for kw in ["we hereby declare", "we hereby announce", "i hereby declare", "hereby declare", "hereby announce"])        or any(kw in t for kw in ["特此宣布","兹宣布","公告如下","特此声明","兹通知","特此公告","兹公告"]):
+        return "declaration"
+
+    # Promise
+    if "i promise" in t_en or any(kw in t for kw in ["我保证","我承诺","一定会","必将"]):
+        return "promise"
+
+    # Expressive
+    if any(kw in t_en for kw in ["thanks", "thank you", "sorry", "apologies", "apologise", "apologize"])        or any(kw in t for kw in ["谢谢","多谢","十分感谢","抱歉","很抱歉","对不起"]):
+        return "expressive"
+
+    # Question
+    if "?" in t        or any(t_en.startswith(w) for w in ["who","what","why","how","when","where","do ","does ","did ","can ","could ","will ","would ","should ","is ","are ","was ","were "])        or any(kw in t for kw in ["吗","呢","是否","能否","请问"]):
+        return "question"
+
+    # Request
+    if any(kw in t_en for kw in ["please ", "please,", "kindly ", "could you", "would you", "can you", "please help", "please update", "please summarize", "please summarise"])        or any(t.startswith(prefix) for prefix in ["请","麻烦","烦请","请你","请您","劳驾"]):
+        return "request"
+
+    # Statement (narrow patterns to avoid stealing Decl/Prom/Expr)
+    import re as _re
+    if any(_re.search(pat, t_en) for pat in [
+        r"\bthere (is|are)\b",
+        r"\b(includes|contains)\b",
+        r"\bwas updated yesterday\b",
+        r"\bis available\b",
+    ]) or any(_re.search(pat, t) for pat in [
+        r"(是|为).+重要", r"(包含|包括|含有)", r"(已经|已)更新", r"可用", r"中有"
+    ]):
+        return "statement"
+
+    return None
 
 class PragActProbe:
     def __init__(self, templates_path: str, labels_path: str, use_logprobs: bool = True):
