@@ -13,78 +13,83 @@ _REQ_ZH = re.compile(r'^(请|麻烦|能否|可以|烦请)')
 
 def fast_cue(text: str):
     """
-    Return (label, margin) if a clear surface-form cue exists, else None.
-    Deterministic EN + ZH patterns, anchored and case-insensitive.
-    Set PRAGACT_DEBUG_CUES=1 to print which rule fired.
+    Fast heuristic routing. Returns (label, confidence) or None.
+    High-confidence (>=0.95) will short-circuit in score().
     """
-    import os, re
-    t = (text or "").strip()
+    if not text:
+        return None
+    t = text.strip()
     low = t.lower()
 
-    def hit(label, why):
-        if os.getenv('PRAGACT_DEBUG_CUES','0').lower() in ('1','true','yes','y','on'):
-            print(f"[fast_cue] {label}: {why} :: {t}")
-        return label, 1.0
+    # --- Obvious declarations (EN/ZH) ---
+    if any(k in t for k in ("兹宣布","特此公告","特此声明","特此宣布")) \
+       or "it is hereby declared" in low or "we hereby declare" in low or "we hereby announce" in low:
+        return "declaration", 1.0
 
-    # --- Declarations ---
-    if t.startswith(("兹宣布","特此公告","特此声明","特此通知")):
-        return hit("declaration","ZH hereby")
-    if re.match(r'^(it is hereby|we hereby|hereby|we declare|notice:|announcement:)\b', low):
-        return hit("declaration","EN hereby/notice")
+    # --- EN: modal-aux question vs request disambiguation ---
+    # Handle "could/can/would/will you ... ?" first, *before* generic '?' rules.
+    if "?" in t and any(kw in low for kw in ("could you","can you","would you","will you")):
+        # Hard request idiom
+        if "would you mind" in low:
+            return "request", 1.0
+        # Knowledge-seeking verbs → question
+        if any(v in low for v in ("explain","clarify","describe","elaborate")):
+            return "question", 1.0
+        # Action verbs → request
+        if any(v in low for v in ("send","open","update","translate","summarize","list","review","calculate","compute","generate","create")):
+            return "request", 1.0
+        # Default for modal-aux with '?' is a question
+        return "question", 1.0
 
-    # --- Expressives ---
-    if re.search(r'\b(sorry|apolog(?:ise|ize|y)|thank you|thanks)\b', low):
-        return hit("expressive","EN thanks/apology")
-    if any(p in t for p in ("抱歉","对不起","不好意思","谢谢","感谢")):
-        return hit("expressive","ZH thanks/apology")
-
-        # --- Promises / commitments ---
-    # EN: "I/We promise …", "I/We will …", "I'll/We'll …"  (cover straight/curly apostrophes)
-    import re as _re  # local alias to avoid shadowing above imports
-    if _re.match(r"^(?:i|we)(?:\s+promise|\s+will|['’]ll)\b", low):
-        return hit("promise","EN promise/will/'ll")
-    # ZH: 我会/我将/我们会/我们将/我承诺/我保证/我们承诺/我们保证 …
-    if t.startswith(("我会","我将","我们会","我们将","我承诺","我保证","我们承诺","我们保证")):
-        return hit("promise","ZH 会/将/承诺/保证")
-# --- Non-requests with 'please' (informative announcements) -> STATEMENT ---
-    if re.match(r'^please (note|be (advised|aware))\b', low):
-        return hit("statement","EN please note")
-    if t.startswith(("请知悉","请注意")) or ("敬请知悉" in t):
-        return hit("statement","ZH 请知悉/注意")
-
-    # --- Indirect requests framed as questions -> REQUEST ---
-    if re.match(r'^(would you mind|could you(?: please)?|can you(?: please)?|would it be possible to)\b', low):
-        return hit("request","EN indirect-request Q")
-    if re.search(r'(能否|能不能|是否可以)', t):
-        return hit("request","ZH 能否/能不能/是否可以")
-
-    
-    # --- High-confidence EN requests phrased as questions (handle before plain-question fallback) ---
-    # e.g., "Could/Would you (please) ... ?", "Would you mind ... ?"
-    rq_prefixes = (
-        "would you mind", "could you please", "could you ",
-        "would you please", "can you please", "can you "
-    )
-    if low.startswith(("please note",)):      # e.g., "Please note that the meeting is at 3pm."
-        return "statement", 1.0
-    if any(low.startswith(p) for p in rq_prefixes):
-        return "request", 1.0
-    # ZH: treat announcement/advice markers as statements
-    if any(x in t for x in ["请知悉", "特此", "兹宣布"]):
-        return "statement", 1.0
-# --- Plain questions ---
+    # --- ZH: questions ---
     if t.startswith("请问"):
-        return hit("question","ZH 请问")
-    if t.endswith("?") or t.endswith("？") or ("吗？" in t) or ("吗?" in t):
-        return hit("question","punctuation ?/？")
+        return "question", 1.0
+    if t.endswith("？") or "吗？" in t or "吗?" in t:
+        return "question", 1.0
 
-    # --- Strong statement shapes ---
-    if low.startswith("there is ") or low.startswith("there are ") \
-       or " looks " in low or " seems " in low \
-       or "it would be great" in low or "it would be helpful" in low:
-        return hit("statement","EN existential/hedge")
-    if any(p in t for p in ("看起来","似乎","包含","是")):
-        return hit("statement","ZH hedge/包含/是")
+    # --- EN: generic questions (that are not modal-aux above) ---
+    if t.endswith("?"):
+        return "question", 1.0
+
+    # --- EN: polite requests / imperatives ---
+    if low.startswith("please ") or low.startswith("pls "):
+        # But "Please note ..." is an announcement/statement in our data
+        if low.startswith("please note"):
+            return "statement", 1.0
+        return "request", 1.0
+
+    # --- ZH: polite requests (avoid '请问' already handled) ---
+    if t.startswith("请") and not t.startswith("请问"):
+        # "请知悉" in our data is used as a notice (statement)
+        if t.startswith("请知悉"):
+            return "statement", 1.0
+        return "request", 1.0
+    if "麻烦" in t:
+        return "request", 1.0
+
+    # --- Promises ---
+    if "i promise" in low or "i will" in low or "i'll" in low:
+        # Heuristic: promise forms that refer to a future delivery
+        if any(v in low for v in ("send","deliver","submit","share","provide","finish","ship","upload")):
+            return "promise", 1.0
+    if any(k in t for k in ("我保证","我承诺")):
+        return "promise", 1.0
+
+    # --- Expressive / apologies / thanks ---
+    if any(k in low for k in ("sorry","apologies","thank you","thanks")):
+        return "expressive", 1.0
+    if any(k in t for k in ("抱歉","感谢","谢谢")):
+        return "expressive", 1.0
+
+    # --- Statements (EN) ---
+    if low.startswith("there is ") or low.startswith("there are "):
+        return "statement", 1.0
+    if " looks " in low or " seems " in low or "it would be great" in low or "it would be helpful" in low:
+        return "statement", 1.0
+
+    # --- Statements (ZH) ---
+    if any(k in t for k in ("看起来","似乎","包含","是")):
+        return "statement", 1.0
 
     return None
 
