@@ -1,0 +1,5 @@
+{"text":"请问你能解释一下实验吗？","gold":"question"}
+{"text":"麻烦你解释一下实验。","gold":"request"}
+{"text":"能否帮我总结一下文档？","gold":"request"}
+{"text":"可以介绍一下模型吗？","gold":"question"}
+{"text":"请注意：我们三点开会。","gold":"statement"}

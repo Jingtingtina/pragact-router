@@ -13,77 +13,74 @@ _REQ_ZH = re.compile(r'^(请|麻烦|能否|可以|烦请)')
 
 
 def fast_cue(text: str):
-    """
-    Return a coarse (label, confidence) or None using simple lexical cues.
-    Order matters: specific polite-request & announcement shapes must be
-    checked BEFORE generic question/“?” heuristics.
-    """
-    if text is None:
-        return None
+
     t = text.strip()
-    if not t:
-        return None
     low = t.lower()
 
-    # --- ZH: explicit declarations ---
-    if t.startswith(("兹宣布", "特此公告", "特此宣布")):
+    def starts(x: str) -> bool:
+        return low.startswith(x)
+
+    # --- SPECIAL: informational notices are statements ---
+    # EN: "Please note that ..."; ZH: "请知悉...", "请注意...", "敬请知悉..."
+    if starts("please note"):
+        return "statement", 1.0
+    if t.startswith("请知悉") or t.startswith("请注意") or t.startswith("敬请知悉"):
+        return "statement", 1.0
+
+    # --- Polite requests that look like questions (English) ---
+    # Must come BEFORE the generic '?' check.
+    if starts("would you mind "):
+        return "request", 1.0
+    if re.match(r"^(could|can|would)\s+you\s+please\b", low):
+        return "request", 1.0
+    # Transactional/action verbs → request for "Could/Can/Would you ..."
+    # (intentionally EXCLUDES 'explain/clarify' so "Could you explain ...?" stays a question)
+    if re.match(
+        r"^(could|can|would)\s+you\s+(send|share|attach|upload|resend|forward|open|update|review|check|fix|create|write|generate|draft|compare|convert|install|run|build|compile|deploy|submit|deliver|add|remove|delete|approve|schedule|book|set|enable|disable|restart|reboot|start|stop|cancel|merge)\b",
+        low,
+    ):
+        return "request", 1.0
+
+    # --- Chinese polite request cues ---
+    # e.g., "麻烦你/您...", "烦请...", "请帮忙/请帮我...", "能否...帮我"
+    if t.startswith("麻烦你") or t.startswith("麻烦您") or t.startswith("烦请") or ("请帮忙" in t) or ("请帮我" in t):
+        return "request", 1.0
+    if re.search(r"能否.*(帮|为).*(我|我们)", t) or re.search(r"(是否可以|可否).*(帮|为).*(我|我们)", t):
+        return "request", 1.0
+
+    # --- Imperatives / 'Please' ---
+    if starts("please ") or starts("pls ") or starts("kindly "):
+        return "request", 1.0
+    IMPERATIVE = (
+        "explain","summarize","translate","list","outline","describe","clarify",
+        "show","provide","give","send","open","update","review","check","fix",
+        "create","write","generate","draft","compare","convert","install","run",
+        "build","compile","deploy","submit","deliver","add","remove","delete",
+        "approve","schedule","book","set","enable","disable","restart","reboot",
+        "start","stop","cancel","merge"
+    )
+    if any(starts(v + " ") for v in IMPERATIVE):
+        return "request", 1.0
+
+    # --- Generic questions ---
+    if starts("请问") or t.endswith("?") or ("吗？" in t) or ("吗?" in t):
+        return "question", 1.0
+
+    # --- Strong statements ---
+    if starts("there is ") or starts("there are ") or (" looks " in low) or (" seems " in low)    or ("it would be great" in low) or ("it would be helpful" in low):
+        return "statement", 1.0
+    if any(p in t for p in ["看起来","似乎","包含","是"]):
+        return "statement", 1.0
+
+    # --- Promises ---
+    if re.match(r"^(i\s*(?:will|'ll))\b", low) or ("i promise" in low) or ("我会" in t) or ("我保证" in t):
+        return "promise", 1.0
+
+    # --- Declarations ---
+    if ("兹宣布" in t) or ("特此公告" in t) or ("we hereby declare" in low) or ("it is hereby declared" in low) or ("we hereby announce" in low):
         return "declaration", 1.0
 
-    # --- EN: explicit statements / announcements ---
-    if low.startswith("please note"):
-        return "statement", 1.0
-
-    # --- ZH: 'please note/notice' statements ---
-    if t.startswith(("请注意", "请知悉", "请留意", "请周知")):
-        return "statement", 1.0
-
-    # --- EN polite requests (BEFORE generic '?') ---
-    if any(p in low for p in [
-        "would you mind ",
-        "could you please ",
-        "would you please ",
-        "can you please ",
-        "could you kindly ",
-        "would you kindly ",
-        "would you be able to ",
-    ]):
-        return "request", 1.0
-    if low.startswith("please "):
-        return "request", 1.0
-
-    # --- ZH polite requests (BEFORE generic '?') ---
-    if any(p in t for p in ["麻烦", "烦请", "劳驾"]):
-        return "request", 1.0
-    if (("能否" in t or "可否" in t or "可以" in t or "能不能" in t) and
-        ("帮我" in t or "帮忙" in t or "协助" in t)):
-        return "request", 1.0
-    # '请+动词 …' common request shapes (but avoid '请问' which is a question)
-    if t.startswith("请") and not t.startswith("请问"):
-        verbs = ("解释","总结","翻译","列出","打开","更新","审阅","介绍","说明","提供","发送")
-        if any(v in t for v in verbs):
-            return "request", 1.0
-
-    # --- EN question starters (BEFORE trailing '?') ---
-    q_starts = ("why ","how ","what ","when ","where ","who ",
-                "is ","are ","does ","do ","can ","could ","would ",
-                "should ","did ","will ","has ","have ","was ","were ")
-    if low.startswith(q_starts):
-        return "question", 1.0
-
-    # --- ZH question cue ---
-    if t.startswith("请问"):
-        return "question", 1.0
-
-    # --- Generic punctuation-based question ---
-    if t.endswith("?") or t.endswith("？") or ("吗？" in t) or ("吗?" in t):
-        return "question", 1.0
-
-    # --- EN/General statements ---
-    if low.startswith(("there is ","there are ")) or        " looks " in low or " seems " in low or        "it would be great" in low or "it would be helpful" in low:
-        return "statement", 1.0
-
     return None
-
 class PragActProbe:
     def __init__(self, templates_path: str, labels_path: str, use_logprobs: bool = True):
         self.tpl = json.load(open(templates_path, "r", encoding="utf-8"))

@@ -1,0 +1,6 @@
+{"text":"Could you please explain the experiment?","gold":"request"}
+{"text":"Could you explain the experiment?","gold":"question"}
+{"text":"Please explain the experiment.","gold":"request"}
+{"text":"Would you mind summarizing the document?","gold":"request"}
+{"text":"Can you tell me what the model does?","gold":"question"}
+{"text":"Please note that we meet at 3pm.","gold":"statement"}
