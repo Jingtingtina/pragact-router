@@ -12,73 +12,75 @@ _REQ_EN = re.compile(r'^(please|kindly|could you|can you|would you|pls)\b', re.I
 _REQ_ZH = re.compile(r'^(请|麻烦|能否|可以|烦请)')
 
 
-def fast_cue(text: str):
 
+def fast_cue(text: str):
+    """
+    Lightweight cue-based detector for obvious question/request/etc.
+    Returns (label, confidence) or None.
+    Confidence is 1.0 for strong cues, 0.2 for weak ones.
+    """
+    import re
+    if not text:
+        return None
     t = text.strip()
     low = t.lower()
 
-    def starts(x: str) -> bool:
-        return low.startswith(x)
+    # --- Declarations (ZH) ---
+    if t.startswith(("兹宣布","特此公告","特此通知")):
+        return ("declaration", 1.0)
 
-    # --- SPECIAL: informational notices are statements ---
-    # EN: "Please note that ..."; ZH: "请知悉...", "请注意...", "敬请知悉..."
-    if starts("please note"):
-        return "statement", 1.0
-    if t.startswith("请知悉") or t.startswith("请注意") or t.startswith("敬请知悉"):
-        return "statement", 1.0
+    # --- Promises (EN/ZH) ---
+    if any(p in low for p in ("i'll ","i will ","we'll ","we will ","i promise","we promise")):
+        return ("promise", 1.0)
+    if any(p in t for p in ("我会","我將","我将","我们会","我們會","我保证","我保證","我承诺","我承諾")):
+        return ("promise", 1.0)
 
-    # --- Polite requests that look like questions (English) ---
-    # Must come BEFORE the generic '?' check.
-    if starts("would you mind "):
-        return "request", 1.0
-    if re.match(r"^(could|can|would)\s+you\s+please\b", low):
-        return "request", 1.0
-    # Transactional/action verbs → request for "Could/Can/Would you ..."
-    # (intentionally EXCLUDES 'explain/clarify' so "Could you explain ...?" stays a question)
-    if re.match(
-        r"^(could|can|would)\s+you\s+(send|share|attach|upload|resend|forward|open|update|review|check|fix|create|write|generate|draft|compare|convert|install|run|build|compile|deploy|submit|deliver|add|remove|delete|approve|schedule|book|set|enable|disable|restart|reboot|start|stop|cancel|merge)\b",
-        low,
-    ):
-        return "request", 1.0
+    # --- Statements (EN/ZH) ---
+    if low.startswith(("please note","note that","for your information","fyi")):
+        return ("statement", 1.0)
+    if t.startswith(("请注意","请知悉")):
+        return ("statement", 1.0)
+    # generic English statement-y shapes
+    if low.startswith("there is ") or low.startswith("there are ") \
+       or re.search(r"\bit would be (great|helpful)\b", low) \
+       or " looks " in low or " seems " in low:
+        return ("statement", 1.0)
+    if any(p in t for p in ("看起来","似乎","包含","是")):
+        return ("statement", 0.2)
 
-    # --- Chinese polite request cues ---
-    # e.g., "麻烦你/您...", "烦请...", "请帮忙/请帮我...", "能否...帮我"
-    if t.startswith("麻烦你") or t.startswith("麻烦您") or t.startswith("烦请") or ("请帮忙" in t) or ("请帮我" in t):
-        return "request", 1.0
-    if re.search(r"能否.*(帮|为).*(我|我们)", t) or re.search(r"(是否可以|可否).*(帮|为).*(我|我们)", t):
-        return "request", 1.0
+    # --- Request overrides (EN) ---
+    if "would you mind" in low:
+        return ("request", 1.0)
+    NO_PLEASE_TASKS = ("send","share","upload","attach","forward","update","fix","add","remove","delete","create","write","draft")
+    if re.search(r"^(could|can|would)\s+you\s+(" + "|".join(NO_PLEASE_TASKS) + r")\b", low):
+        return ("request", 1.0)
+    WITH_PLEASE_TASKS = NO_PLEASE_TASKS + ("explain","summarize","summarise","list","translate","review")
+    if re.search(r"^(could|can|would)\s+you\s+please\s+(" + "|".join(WITH_PLEASE_TASKS) + r")\b", low):
+        return ("request", 1.0)
 
-    # --- Imperatives / 'Please' ---
-    if starts("please ") or starts("pls ") or starts("kindly "):
-        return "request", 1.0
-    IMPERATIVE = (
-        "explain","summarize","translate","list","outline","describe","clarify",
-        "show","provide","give","send","open","update","review","check","fix",
-        "create","write","generate","draft","compare","convert","install","run",
-        "build","compile","deploy","submit","deliver","add","remove","delete",
-        "approve","schedule","book","set","enable","disable","restart","reboot",
-        "start","stop","cancel","merge"
-    )
-    if any(starts(v + " ") for v in IMPERATIVE):
-        return "request", 1.0
+    # --- Chinese special-case: '请问...' = question ---
+    if t.startswith(("请问","請問")):
+        return ("question", 1.0)
 
-    # --- Generic questions ---
-    if starts("请问") or t.endswith("?") or ("吗？" in t) or ("吗?" in t):
-        return "question", 1.0
+    # --- Requests (ZH), but NOT for '请问...' ---
+    if ("帮我" in t or "幫我" in t) or (t.startswith(("请","請","麻烦","麻煩","劳驾","勞駕")) and not t.startswith(("请问","請問"))):
+        # '请注意' / '请知悉' handled above as statement
+        return ("request", 1.0)
 
-    # --- Strong statements ---
-    if starts("there is ") or starts("there are ") or (" looks " in low) or (" seems " in low)    or ("it would be great" in low) or ("it would be helpful" in low):
-        return "statement", 1.0
-    if any(p in t for p in ["看起来","似乎","包含","是"]):
-        return "statement", 1.0
+    # --- Generic questions (EN/ZH) ---
+    if t.endswith("?") or t.endswith("？") or ("吗？" in t) or ("嗎？" in t):
+        return ("question", 1.0)
 
-    # --- Promises ---
-    if re.match(r"^(i\s*(?:will|'ll))\b", low) or ("i promise" in low) or ("我会" in t) or ("我保证" in t):
-        return "promise", 1.0
+    # --- EN request fallback ---
+    if low.startswith(("please ","kindly ")):
+        if low.startswith("please note"):
+            return ("statement", 1.0)
+        return ("request", 1.0)
 
-    # --- Declarations ---
-    if ("兹宣布" in t) or ("特此公告" in t) or ("we hereby declare" in low) or ("it is hereby declared" in low) or ("we hereby announce" in low):
-        return "declaration", 1.0
+    # Imperative (weak) without 'please'
+    ACTION_VERBS_EN = ("send","update","summarize","summarise","explain","translate","list","review","draft","write","create")
+    if any(low.startswith(v + " ") for v in ACTION_VERBS_EN):
+        return ("request", 0.2)
 
     return None
 class PragActProbe:
