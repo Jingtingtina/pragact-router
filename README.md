@@ -10,20 +10,24 @@ Examples:
 
 
 
-We expose a lightweight “fast-cue” gate to short-circuit obvious **questions/requests**.
+
+## Fast‑Cue Gate (v0.2.x)
+
+The fast‑cue gate short‑circuits obvious **question/request** inputs using cheap EN/ZH patterns.
 
 **Runtime controls**
-- `PRAGACT_FAST_CUES` (default `1`): enable fast gate
-- `PRAGACT_FAST_TAU`  (EN rec: `0.30`, ZH rec: `0.20`): confidence threshold for short-circuit
+- `PRAGACT_FAST_CUES` (default `1`): enable the fast gate
+- `PRAGACT_FAST_TAU`: confidence threshold for allowing heavy actions  
+  - Recommended: **EN `0.30`**, **ZH `0.20`** (based on our sweeps in `results/logs/`)
 
 **Convenience runner**
 ```bash
-
+# EN
 export PRAGACT_FAST_CUES=1
 export PRAGACT_FAST_TAU=0.30
 ./scripts/run_with_gate.sh configs/default_en.yaml data/en/probe_150.jsonl
 
-
+# ZH
 export PRAGACT_FAST_TAU=0.20
 ./scripts/run_with_gate.sh configs/default_zh.yaml data/zh/probe_150.jsonl
 
