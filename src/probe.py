@@ -13,74 +13,65 @@ _REQ_ZH = re.compile(r'^(请|麻烦|能否|可以|烦请)')
 
 
 
-def fast_cue(text: str):
+
+def fast_cue(t: str):
     """
-    Lightweight cue-based detector for obvious question/request/etc.
-    Returns (label, confidence) or None.
-    Confidence is 1.0 for strong cues, 0.2 for weak ones.
+    Lightweight cues for {question, request, statement, promise, declaration}.
+    Returns (label, confidence) where confidence is 1.0 for strong, 0.2 for light cues.
     """
-    import re
-    if not text:
+    if not t:
         return None
-    t = text.strip()
+    t = t.strip()
     low = t.lower()
 
     # --- Declarations (ZH) ---
     if t.startswith(("兹宣布","特此公告","特此通知")):
         return ("declaration", 1.0)
 
+    # --- Statements (EN) strong prefixes (override promises) ---
+    # e.g., "FYI:", "As a reminder,", "Heads up:", "Please note", "Note that", "For your information"
+    if low.startswith(("fyi", "fyi:", "as a reminder", "heads up", "heads-up", "nb:", "please note", "note that", "for your information")):
+        return ("statement", 1.0)
+
+    # --- Statements (EN) soft patterns ---
+    # e.g., "it seems", "it looks like", "there is/are"
+    if low.startswith(("there is ", "there are ", "it seems", "it looks like")) or        " it seems" in low or " it looks like" in low:
+        return ("statement", 0.2)
+
+    # Subtle preference statements
+    if "it would be great" in low or "it would be helpful" in low:
+        return ("statement", 1.0)
+
+    # --- Statements (ZH) ---
+    if t.startswith(("请注意","请知悉","請注意","請知悉")):
+        return ("statement", 1.0)
+
+    # --- Requests (ZH) ---
+    if any(x in t for x in ("帮我","幫我","麻烦","麻煩","劳驾","勞駕")):
+        return ("request", 1.0)
+    if t.startswith(("请","請")) and not t.startswith(("请问","請問")):
+        return ("request", 1.0)
+
+    # --- Requests (EN) ---
+    if "would you mind" in low or low.startswith(("could you please", "would you please", "can you please")):
+        return ("request", 1.0)
+    if low.startswith(("please ", "kindly ")):
+        return ("request", 1.0)
+    ACTION_VERBS_EN = ("send","update","summarize","summarise","explain","translate","list","review","draft","write","create","share","provide","upload","forward")
+    if any(low.startswith(v + " ") for v in ACTION_VERBS_EN):
+        return ("request", 0.2)
+
     # --- Promises (EN/ZH) ---
-    if any(p in low for p in ("i'll ","i will ","we'll ","we will ","i promise","we promise")):
+    if any(p in low for p in ("i'll ", "i will ", "we'll ", "we will ", "i promise", "we promise")):
         return ("promise", 1.0)
     if any(p in t for p in ("我会","我將","我将","我们会","我們會","我保证","我保證","我承诺","我承諾")):
         return ("promise", 1.0)
 
-    # --- Statements (EN/ZH) ---
-    if low.startswith(("please note","note that","for your information","fyi")):
-        return ("statement", 1.0)
-    if t.startswith(("请注意","请知悉")):
-        return ("statement", 1.0)
-    # generic English statement-y shapes
-    if low.startswith("there is ") or low.startswith("there are ") \
-       or re.search(r"\bit would be (great|helpful)\b", low) \
-       or " looks " in low or " seems " in low:
-        return ("statement", 1.0)
-    if any(p in t for p in ("看起来","似乎","包含","是")):
-        return ("statement", 0.2)
-
-    # --- Request overrides (EN) ---
-    if "would you mind" in low:
-        return ("request", 1.0)
-    NO_PLEASE_TASKS = ("send","share","upload","attach","forward","update","fix","add","remove","delete","create","write","draft")
-    if re.search(r"^(could|can|would)\s+you\s+(" + "|".join(NO_PLEASE_TASKS) + r")\b", low):
-        return ("request", 1.0)
-    WITH_PLEASE_TASKS = NO_PLEASE_TASKS + ("explain","summarize","summarise","list","translate","review")
-    if re.search(r"^(could|can|would)\s+you\s+please\s+(" + "|".join(WITH_PLEASE_TASKS) + r")\b", low):
-        return ("request", 1.0)
-
-    # --- Chinese special-case: '请问...' = question ---
+    # --- Questions (EN/ZH) ---
     if t.startswith(("请问","請問")):
         return ("question", 1.0)
-
-    # --- Requests (ZH), but NOT for '请问...' ---
-    if ("帮我" in t or "幫我" in t) or (t.startswith(("请","請","麻烦","麻煩","劳驾","勞駕")) and not t.startswith(("请问","請問"))):
-        # '请注意' / '请知悉' handled above as statement
-        return ("request", 1.0)
-
-    # --- Generic questions (EN/ZH) ---
-    if t.endswith("?") or t.endswith("？") or ("吗？" in t) or ("嗎？" in t):
+    if t.endswith("?") or t.endswith("？"):
         return ("question", 1.0)
-
-    # --- EN request fallback ---
-    if low.startswith(("please ","kindly ")):
-        if low.startswith("please note"):
-            return ("statement", 1.0)
-        return ("request", 1.0)
-
-    # Imperative (weak) without 'please'
-    ACTION_VERBS_EN = ("send","update","summarize","summarise","explain","translate","list","review","draft","write","create")
-    if any(low.startswith(v + " ") for v in ACTION_VERBS_EN):
-        return ("request", 0.2)
 
     return None
 class PragActProbe:
