@@ -1,0 +1,100 @@
+== EN τ=0.10 ==
+              precision    recall  f1-score   support
+
+   statement      0.625     0.128     0.213        39
+    question      0.923     1.000     0.960        48
+     request      0.774     0.854     0.812        48
+     promise      0.312     1.000     0.476         5
+  expressive      0.400     0.800     0.533         5
+ declaration      0.273     0.600     0.375         5
+
+    accuracy                          0.707       150
+   macro avg      0.551     0.730     0.562       150
+weighted avg      0.738     0.707     0.668       150
+
+[[ 5  4 12  8  5  5]
+ [ 0 48  0  0  0  0]
+ [ 2  0 41  2  1  2]
+ [ 0  0  0  5  0  0]
+ [ 0  0  0  0  4  1]
+ [ 1  0  0  1  0  3]]
+== EN τ=0.15 ==
+              precision    recall  f1-score   support
+
+   statement      0.857     0.154     0.261        39
+    question      0.800     1.000     0.889        48
+     request      0.837     0.854     0.845        48
+     promise      0.455     1.000     0.625         5
+  expressive      0.400     0.800     0.533         5
+ declaration      0.231     0.600     0.333         5
+
+    accuracy                          0.713       150
+   macro avg      0.597     0.735     0.581       150
+weighted avg      0.783     0.713     0.673       150
+
+[[ 6 10  7  4  4  8]
+ [ 0 48  0  0  0  0]
+ [ 1  0 41  2  2  2]
+ [ 0  0  0  5  0  0]
+ [ 0  0  1  0  4  0]
+ [ 0  2  0  0  0  3]]
+== EN τ=0.20 ==
+              precision    recall  f1-score   support
+
+   statement      0.750     0.231     0.353        39
+    question      0.800     1.000     0.889        48
+     request      0.851     0.833     0.842        48
+     promise      0.357     1.000     0.526         5
+  expressive      0.400     0.800     0.533         5
+ declaration      0.429     0.600     0.500         5
+
+    accuracy                          0.727       150
+   macro avg      0.598     0.744     0.607       150
+weighted avg      0.763     0.727     0.698       150
+
+[[ 9 10  6  6  5  3]
+ [ 0 48  0  0  0  0]
+ [ 2  2 40  2  1  1]
+ [ 0  0  0  5  0  0]
+ [ 0  0  1  0  4  0]
+ [ 1  0  0  1  0  3]]
+== EN τ=0.25 ==
+              precision    recall  f1-score   support
+
+   statement      0.500     0.077     0.133        39
+    question      0.857     1.000     0.923        48
+     request      0.788     0.854     0.820        48
+     promise      0.312     1.000     0.476         5
+  expressive      0.308     0.800     0.444         5
+ declaration      0.571     0.800     0.667         5
+
+    accuracy                          0.700       150
+   macro avg      0.556     0.755     0.577       150
+weighted avg      0.696     0.700     0.645       150
+
+[[ 3  8 11  7  7  3]
+ [ 0 48  0  0  0  0]
+ [ 3  0 41  3  1  0]
+ [ 0  0  0  5  0  0]
+ [ 0  0  0  1  4  0]
+ [ 0  0  0  0  1  4]]
+== EN τ=0.30 ==
+              precision    recall  f1-score   support
+
+   statement      0.750     0.077     0.140        39
+    question      0.842     1.000     0.914        48
+     request      0.851     0.833     0.842        48
+     promise      0.556     1.000     0.714         5
+  expressive      0.278     1.000     0.435         5
+ declaration      0.200     0.600     0.300         5
+
+    accuracy                          0.693       150
+   macro avg      0.579     0.752     0.557       150
+weighted avg      0.771     0.693     0.647       150
+
+[[ 3  4  7  3 11 11]
+ [ 0 48  0  0  0  0]
+ [ 1  3 40  1  2  1]
+ [ 0  0  0  5  0  0]
+ [ 0  0  0  0  5  0]
+ [ 0  2  0  0  0  3]]

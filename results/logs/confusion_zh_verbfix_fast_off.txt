@@ -1,0 +1,19 @@
+              precision    recall  f1-score   support
+
+   statement      1.000     0.051     0.098        39
+    question      0.857     1.000     0.923        48
+     request      0.857     1.000     0.923        48
+     promise      0.357     1.000     0.526         5
+  expressive      0.333     0.800     0.471         5
+ declaration      0.500     1.000     0.667         5
+
+    accuracy                          0.747       150
+   macro avg      0.651     0.809     0.601       150
+weighted avg      0.848     0.747     0.672       150
+
+[[ 2  8  7  9  8  5]
+ [ 0 48  0  0  0  0]
+ [ 0  0 48  0  0  0]
+ [ 0  0  0  5  0  0]
+ [ 0  0  1  0  4  0]
+ [ 0  0  0  0  0  5]]

@@ -1,0 +1,20 @@
+
+== FAST_OFF | probe_150.jsonl ==
+examples        : 150
+accuracy        : 0.760
+wall_time_sec   : 0.105
+llm_calls       : (dummy)
+prompt_tokens   : (dummy)
+completion_tokens: (dummy)
+heavy_triggers  : 4
+heavy_rate      : 0.027
+
+== FAST_ON | probe_150.jsonl ==
+examples        : 150
+accuracy        : 0.780
+wall_time_sec   : 0.011
+llm_calls       : (dummy)
+prompt_tokens   : (dummy)
+completion_tokens: (dummy)
+heavy_triggers  : 2
+heavy_rate      : 0.013

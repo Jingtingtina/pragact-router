@@ -1,0 +1,105 @@
+== EN τ=0.10 ==
+
+== FAST_OFF | probe_150.jsonl ==
+examples        : 150
+accuracy        : 0.740
+wall_time_sec   : 0.175
+llm_calls       : (dummy)
+prompt_tokens   : (dummy)
+completion_tokens: (dummy)
+heavy_triggers  : 2
+heavy_rate      : 0.013
+
+== FAST_ON | probe_150.jsonl ==
+examples        : 150
+accuracy        : 0.720
+wall_time_sec   : 0.007
+llm_calls       : (dummy)
+prompt_tokens   : (dummy)
+completion_tokens: (dummy)
+heavy_triggers  : 66
+heavy_rate      : 0.440
+== EN τ=0.15 ==
+
+== FAST_OFF | probe_150.jsonl ==
+examples        : 150
+accuracy        : 0.747
+wall_time_sec   : 0.085
+llm_calls       : (dummy)
+prompt_tokens   : (dummy)
+completion_tokens: (dummy)
+heavy_triggers  : 2
+heavy_rate      : 0.013
+
+== FAST_ON | probe_150.jsonl ==
+examples        : 150
+accuracy        : 0.727
+wall_time_sec   : 0.007
+llm_calls       : (dummy)
+prompt_tokens   : (dummy)
+completion_tokens: (dummy)
+heavy_triggers  : 68
+heavy_rate      : 0.453
+== EN τ=0.20 ==
+
+== FAST_OFF | probe_150.jsonl ==
+examples        : 150
+accuracy        : 0.700
+wall_time_sec   : 0.087
+llm_calls       : (dummy)
+prompt_tokens   : (dummy)
+completion_tokens: (dummy)
+heavy_triggers  : 4
+heavy_rate      : 0.027
+
+== FAST_ON | probe_150.jsonl ==
+examples        : 150
+accuracy        : 0.693
+wall_time_sec   : 0.007
+llm_calls       : (dummy)
+prompt_tokens   : (dummy)
+completion_tokens: (dummy)
+heavy_triggers  : 65
+heavy_rate      : 0.433
+== EN τ=0.25 ==
+
+== FAST_OFF | probe_150.jsonl ==
+examples        : 150
+accuracy        : 0.720
+wall_time_sec   : 0.088
+llm_calls       : (dummy)
+prompt_tokens   : (dummy)
+completion_tokens: (dummy)
+heavy_triggers  : 2
+heavy_rate      : 0.013
+
+== FAST_ON | probe_150.jsonl ==
+examples        : 150
+accuracy        : 0.727
+wall_time_sec   : 0.007
+llm_calls       : (dummy)
+prompt_tokens   : (dummy)
+completion_tokens: (dummy)
+heavy_triggers  : 64
+heavy_rate      : 0.427
+== EN τ=0.30 ==
+
+== FAST_OFF | probe_150.jsonl ==
+examples        : 150
+accuracy        : 0.707
+wall_time_sec   : 0.091
+llm_calls       : (dummy)
+prompt_tokens   : (dummy)
+completion_tokens: (dummy)
+heavy_triggers  : 5
+heavy_rate      : 0.033
+
+== FAST_ON | probe_150.jsonl ==
+examples        : 150
+accuracy        : 0.733
+wall_time_sec   : 0.007
+llm_calls       : (dummy)
+prompt_tokens   : (dummy)
+completion_tokens: (dummy)
+heavy_triggers  : 65
+heavy_rate      : 0.433
