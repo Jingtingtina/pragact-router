@@ -1,0 +1,7 @@
+id	instruction	input	reference
+ins-0001	Summarize in one sentence.	The quick brown fox jumps over the lazy dog.	The sentence describes a fox jumping over a dog.
+ins-0002	Rewrite formally.	pls send me the doc asap	Please send me the document as soon as possible.
+ins-0003	Paraphrase more formally.	the meeting is at 3pm	The meeting is scheduled for 3 p.m.
+ins-0004	Summarize in 8–12 words.	Deep learning models can overfit small datasets.	Deep learning can overfit when datasets are small.
+ins-0005	Rewrite concisely.	This section is extremely verbose and repetitive.	This section is verbose and repetitive.
+ins-0006	Improve clarity.	We did some tests which maybe show improvements.	We ran tests that suggest improvements.

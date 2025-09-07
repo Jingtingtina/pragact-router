@@ -48,13 +48,13 @@ def pos_prob(clf, X):
         except Exception:
             idx1 = 1
         return float(P[0, idx1])
-    # single-column proba (e.g., Dummy on single-class data)
+    # single-column probability (e.g., Dummy on single-class data)
     try:
         classes = list(getattr(clf, "classes_", []))
         if classes and classes[0] == 1:
-            return float(P[0,0])  # prob of class 1
+            return float(P[0,0])
         else:
-            return 0.0            # only class 0 present
+            return 0.0
     except Exception:
         return 0.0
 
