@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-import re, json, glob
+import re, json
 
-def best_from_file(path, tag, key="avg_quality"):
+def best_from_file(path, tag, param_name):
     best=None
     with open(path,"r",encoding="utf-8") as f:
         for line in f:
             if line.startswith(tag):
-                m=re.search(r"avg_quality=([0-9.]+).*total_tokens=([0-9.]+).*=(\d*\.\d+|\d+)", line)
+                m=re.search(rf"avg_quality=([0-9.]+).*total_tokens=([0-9.]+).*{param_name}=([0-9.]+)", line)
                 if m:
                     q,t,thr = float(m.group(1)), float(m.group(2)), float(m.group(3))
                     if (best is None) or (q>best[0]) or (q==best[0] and t<best[1]):
@@ -14,8 +14,6 @@ def best_from_file(path, tag, key="avg_quality"):
     return best
 
 def base_heavy_avg(base_scored, heavy_scored, task):
-    # read quickly to compute averages (already printed earlier, but we recompute)
-    import json
     b=[json.loads(l) for l in open(base_scored,"r",encoding="utf-8")]
     h=[json.loads(l) for l in open(heavy_scored,"r",encoding="utf-8")]
     if task=="qa":
@@ -31,12 +29,12 @@ def base_heavy_avg(base_scored, heavy_scored, task):
 def table(task):
     if task=="qa":
         base,heavy = base_heavy_avg("exp/logs/qa_en.base.scored.jsonl","exp/logs/qa_en.heavy.scored.jsonl","qa")
-        pgbi = best_from_file("exp/reports/pcurve_pgbi_qa.txt","[gate]")
-        marg = best_from_file("exp/reports/pcurve_margin_qa.txt","[gate-margin]")
+        pgbi = best_from_file("exp/reports/pcurve_pgbi_qa.txt","[gate]","lambda")
+        marg = best_from_file("exp/reports/pcurve_margin_qa.txt","[gate-margin]","tau")
     else:
         base,heavy = base_heavy_avg("exp/logs/instr_en.base.scored.jsonl","exp/logs/instr_en.heavy.scored.jsonl","instr")
-        pgbi = best_from_file("exp/reports/pcurve_pgbi_instr.txt","[gate]")
-        marg = best_from_file("exp/reports/pcurve_margin_instr.txt","[gate-margin]")
+        pgbi = best_from_file("exp/reports/pcurve_pgbi_instr.txt","[gate]","lambda")
+        marg = best_from_file("exp/reports/pcurve_margin_instr.txt","[gate-margin]","tau")
 
     print(f"\n### {task.upper()} summary")
     print("| Method | Quality | Tokens | Note |")
