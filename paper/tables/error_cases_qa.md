@@ -1,6 +1,6 @@
 # Error cases (qa)
 
-- N=20; threshold delta=0.01
+- N=20; threshold delta=0.005
 - Helped: 1  | Hurt: 0  | Wasted (FP): 0  | Missed (FN): 0
 
 ## Heavy helped (sh>sb)
